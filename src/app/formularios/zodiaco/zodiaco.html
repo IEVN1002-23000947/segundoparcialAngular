@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="text-align: center; color: crimson;">Bienvenido al zodiaco</h1>
+    <div class="container">
+        <div class="row" style="display: flex; justify-content: center; margin-top: 30px;">
+            <div class="mb-6">
+                <div class="mb-3">
+                    <form>
+                        <div>
+                            <h2>Datos personales</h2>
+                            <label>Nombre: <input [(ngModel)]="nombre" name="nombre" type="text"></label><br><br>
+                            <label>Apaterno: <input [(ngModel)]="apellidop" name="apellidop" type="text" ></label><br><br>
+                            <label>Amaterno: <input [(ngModel)]="apellidom" name="apellidom" type="text"></label><br><br>
+                        </div>
+                        <div>
+                            <h2>Fecha de nacimiento</h2>
+                            <div style="display: flex; gap: 10px; width: 33%; text-align: center;">
+                                <div><label>Día: <input [(ngModel)]="dia" name="dia" type="text" style="padding: 8px; width: 100%;"></label></div>
+                                <div><label>Mes: <input [(ngModel)]="mes" name="mes" type="text" style="padding: 8px; width: 100%;"></label></div>
+                                <div><label>Año: <input [(ngModel)]="anio" name="anio" type="text" style="padding: 8px; width: 100%;"></label></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h2>Sexo</h2>
+                            <label><input [(ngModel)]="sexo" name="sexo" value="masculino" type="radio">Masulino</label><br>
+                            <label><input [(ngModel)]="sexo" name="sexo" value="femenino" type="radio">Femenino</label>
+                        </div><br>
+                        <button (click)="imprimir()" type="button" style="background-color:crimson; width: 100px; height: 30px; border-radius: 10px;">Imprimir</button>
+                    </form>
+                </div>
+            </div>
+            <div *ngIf="mostrar" style="width: 400px; padding: 20px; text-align: center; display: flex;">
+                <div class="card p-4 text-center">
+                    <h3>Hola {{nombre}} {{apellidop}} {{apellidom}}</h3>
+                    <h3>Tienes {{edad}} años</h3>
+                    <h3>Tu signo zodiacal es {{signo}}</h3>
+                    <img [src]="imagen" width="200">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
