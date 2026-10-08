@@ -9,13 +9,13 @@ import { FormGroup, FormControl, FormsModule, ReactiveFormsModule }  from '@angu
   templateUrl: './lista-alumnos.html',
 })
 export class ListaAlumnos implements OnInit {
-  formulario!:FormGroup
+  formulario!:FormGroup //! significa que la inicializacion sera mas adelante
   alumnos:IAlumnos[]=[]
   nuevoAlumno:IAlumnos={
-    matricula:'',
-    nombre:'',
-    correo:'',
-    materia:''
+    matricula:'xx',
+    nombre:'xx',
+    correo:'xx',
+    materia:'xx'
   }
   ngOnInit(): void {
     this.cargarAlumno()
@@ -26,6 +26,14 @@ export class ListaAlumnos implements OnInit {
       materia: new FormControl('')
     })
   }
+
+  muestraAlumnos():void{
+    this.nuevoAlumno.matricula=this.formulario.value.matricula
+    this.nuevoAlumno.nombre=this.formulario.value.nombre
+    this.nuevoAlumno.correo=this.formulario.value.correo
+    this.nuevoAlumno.materia=this.formulario.value.materia
+  }
+
   cargarAlumno():void{
 
   }

@@ -12,6 +12,7 @@
         name="nombre"
         formControlName="nombre"
         required
+        placeholder="nombre"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
  
@@ -25,6 +26,7 @@
         name="matricula"
         formControlName="matricula"
         required
+        placeholder="matricula"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
  
@@ -38,6 +40,7 @@
         name="correo"
         formControlName="correo"
         required
+        placeholder="correo"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
  
@@ -50,11 +53,13 @@
         name="materia"
         formControlName="materia"
         required
+        placeholder="materia"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 
       <div class="flex justify-end mt-5">
         <button
+        (click)="muestraAlumnos()"
           type="submit"
           class="text-white bg-blue-700 hover:bg-blue-800
                  focus:ring-4 focus:outline-none focus:ring-blue-300
@@ -65,4 +70,11 @@
       </div>
     </div>
   </form>
+
+  <h1>Lista Alumno</h1>
+  <h2>Matricula: {{nuevoAlumno.matricula}}</h2>
+  <h2>Nombre: {{nuevoAlumno.nombre}}</h2>
+  <h2>Correo: {{nuevoAlumno.correo}}</h2>
+  <h2>Materia: {{nuevoAlumno.materia}}</h2>
+
 </div>
