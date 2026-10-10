@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IAlumnos } from '../alumnos';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule }  from '@angular/forms';
+import { materialize } from 'rxjs';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   imports: [FormsModule, ReactiveFormsModule],
@@ -11,6 +13,8 @@ import { FormGroup, FormControl, FormsModule, ReactiveFormsModule }  from '@angu
 export class ListaAlumnos implements OnInit {
   formulario!:FormGroup //! significa que la inicializacion sera mas adelante
   alumnos:IAlumnos[]=[]
+  indiceEdicion:number=-1
+
   nuevoAlumno:IAlumnos={
     matricula:'xx',
     nombre:'xx',
@@ -26,6 +30,30 @@ export class ListaAlumnos implements OnInit {
       materia: new FormControl('')
     })
   }
+  agregarAulmno():void{
+    if (
+      this.nuevoAlumno.matricula==='' ||
+      this.nuevoAlumno.nombre ==='' ||
+      this.nuevoAlumno.correo ==='' ||
+      this.nuevoAlumno.materia ===''  
+    ){
+      alert('Todos los campos son obligatorios');
+      return;
+    }
+    if(this.indiceEdicion!==-1){
+      this.alumnos[this.indiceEdicion]={
+        ...this.nuevoAlumno
+      }
+    }else{
+      this.alumnos.push({...this.nuevoAlumno})
+    }
+
+    localStorage.setItem(
+      'alumnos',
+      JSON.stringify(this.alumnos)
+    );
+    this.limpiarCampos();
+  }
 
   muestraAlumnos():void{
     this.nuevoAlumno.matricula=this.formulario.value.matricula
@@ -35,6 +63,53 @@ export class ListaAlumnos implements OnInit {
   }
 
   cargarAlumno():void{
+    const datos=localStorage.getItem('alumnos');
+    if(datos){
+      this.alumnos=JSON.parse(datos);
+    }
+  }
+  
+  editarAlumnos(index: number): void {
+    const alumno = this.alumnos[index];
 
+    this.nuevoAlumno = {
+      ...alumno
+    };
+
+    this.formulario.patchValue({
+      matricula: alumno.matricula,
+      nombre: alumno.nombre,
+      correo: alumno.correo,
+      materia: alumno.materia
+    });
+
+    this.indiceEdicion = index;
+  }
+
+  eliminarAlumno(index: number): void {
+    this.alumnos.splice(index, 1);
+
+    localStorage.setItem(
+      'alumnos',
+      JSON.stringify(this.alumnos)
+    );
+
+    if (this.indiceEdicion === index) {
+      this.limpiarCampos();
+    } else if (this.indiceEdicion > index) {
+      this.indiceEdicion--;
+    }
+  }
+
+  limpiarCampos(): void {
+    this.nuevoAlumno = {
+      matricula: '',
+      nombre: '',
+      correo: '',
+      materia: ''
+    };
+
+    this.formulario.reset();
+    this.indiceEdicion = -1;
   }
 }
