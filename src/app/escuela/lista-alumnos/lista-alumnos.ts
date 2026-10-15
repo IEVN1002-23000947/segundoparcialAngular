@@ -1,28 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { IAlumnos } from '../alumnos';
+import { IAlumno } from '../alumnos';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule }  from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { materialize } from 'rxjs';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   selector: 'app-lista-alumnos',
   styleUrl: './lista-alumnos.css',
   templateUrl: './lista-alumnos.html',
 })
 export class ListaAlumnos implements OnInit {
   formulario!:FormGroup //! significa que la inicializacion sera mas adelante
-  alumnos:IAlumnos[]=[]
+  alumnos:IAlumno[]=[]
   indiceEdicion:number=-1
 
-  nuevoAlumno:IAlumnos={
-    matricula:'xx',
-    nombre:'xx',
-    correo:'xx',
-    materia:'xx'
+  nuevoAlumno:IAlumno={
+    matricula:'',
+    nombre:'',
+    correo:'',
+    materia:''
   }
   ngOnInit(): void {
-    this.cargarAlumno()
+    this.cargarAlumnos()
     this.formulario= new FormGroup({
       matricula: new FormControl(''),
       nombre: new FormControl(''),
@@ -30,7 +31,7 @@ export class ListaAlumnos implements OnInit {
       materia: new FormControl('')
     })
   }
-  agregarAulmno():void{
+  agregarAlumno():void{
     if (
       this.nuevoAlumno.matricula==='' ||
       this.nuevoAlumno.nombre ==='' ||
@@ -60,9 +61,10 @@ export class ListaAlumnos implements OnInit {
     this.nuevoAlumno.nombre=this.formulario.value.nombre
     this.nuevoAlumno.correo=this.formulario.value.correo
     this.nuevoAlumno.materia=this.formulario.value.materia
+    this.agregarAlumno()
   }
 
-  cargarAlumno():void{
+  cargarAlumnos():void{
     const datos=localStorage.getItem('alumnos');
     if(datos){
       this.alumnos=JSON.parse(datos);
@@ -73,7 +75,7 @@ export class ListaAlumnos implements OnInit {
     const alumno = this.alumnos[index];
 
     this.nuevoAlumno = {
-      ...alumno
+      ...this.alumnos[index]
     };
 
     this.formulario.patchValue({
@@ -93,12 +95,6 @@ export class ListaAlumnos implements OnInit {
       'alumnos',
       JSON.stringify(this.alumnos)
     );
-
-    if (this.indiceEdicion === index) {
-      this.limpiarCampos();
-    } else if (this.indiceEdicion > index) {
-      this.indiceEdicion--;
-    }
   }
 
   limpiarCampos(): void {
@@ -107,9 +103,13 @@ export class ListaAlumnos implements OnInit {
       nombre: '',
       correo: '',
       materia: ''
-    };
-
-    this.formulario.reset();
-    this.indiceEdicion = -1;
+    }
+    this.formulario.patchValue({
+      matricula: this.nuevoAlumno.matricula,
+      nombre: this.nuevoAlumno.nombre,
+      correo: this.nuevoAlumno.correo,
+      materia: this.nuevoAlumno.materia
+    })
+    this.indiceEdicion=-1;
   }
 }

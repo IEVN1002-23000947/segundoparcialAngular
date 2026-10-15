@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IEntradas } from '../entradas';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule }  from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
@@ -20,6 +21,8 @@ export class Cinepolis implements OnInit {
   valorPagar: number=0
   mensaje:string=''
   procesado:boolean=false
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.formulario= new FormGroup({
@@ -58,17 +61,21 @@ export class Cinepolis implements OnInit {
 
     this.valorPagar = total
     this.procesado = true
+
+    this.compra={
+    nombre:nombre,
+    compradores:String(compradores),
+    tarjepuntos:tarjeta,
+    boletos:String(boletos)
+  }
+  let registros = JSON.parse(localStorage.getItem('entradas') || '[]');
+  registros.push({
+      ...this.compra
+    })
+    localStorage.setItem('entradas', JSON.stringify(registros));
   }
 
   salir(): void {
-    this.formulario.reset({
-      nombre: '',
-      compradores: '',
-      tarjepuntos: 'no',
-      boletos: ''
-    })
-    this.valorPagar = 0
-    this.mensaje = ''
-    this.procesado = false
+    this.router.navigate(['/escuela/ver-registros'])  
   }
 }

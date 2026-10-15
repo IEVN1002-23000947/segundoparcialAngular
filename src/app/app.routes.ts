@@ -18,7 +18,7 @@ export const routes: Routes = [
                     import('./formularios/zodiaco/zodiaco').then(
                         (c) => c.Zodiaco
                     )
-            }
+            }            
         ]
     },
     {
@@ -38,6 +38,13 @@ export const routes: Routes = [
                     import('./escuela/cinepolis/cinepolis').then(
                         (c) => c.Cinepolis
                     )
+            },
+            {
+                path: 'ver-registros',
+                loadComponent: () =>
+                import('./escuela/ver-registros/ver-registros').then(
+                    (c) => c.VerRegistros
+                )
             }
         ]
     },
